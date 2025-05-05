@@ -12,8 +12,10 @@ const TodoService = {
     try {
       const response = await fetch(url, { method: "GET" });
       if (response.status !== 200) {
-        throw new Error(`Error code ${response.status}`);
+        const text = await response.text();
+        throw new Error(`Error ${response.status}: ${text}`);
       }
+      
 
       const decoded = await response.json();
       const rawData = decoded.data || [];

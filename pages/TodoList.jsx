@@ -18,7 +18,7 @@ import {
   ActivityIndicator
 } from "react-native-paper";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { TodoContext } from "../context/TodoContext";
+import { TodoContext } from "../context/ToDoProvider";
 
 export default function TodoList() {
   const {
@@ -67,7 +67,14 @@ export default function TodoList() {
   const renderItem = ({ item }) => {
     const renderRightActions = () => (
       <View style={styles.rightAction}>
-        <Text style={styles.deleteText}>Eliminar</Text>
+        <Button
+          icon="trash-can"
+          mode="contained-tonal"
+          onPress={() => handleDelete(item.id)}
+          style={styles.deleteButton}
+        >
+          Eliminar
+        </Button>
       </View>
     );
 
@@ -120,8 +127,7 @@ export default function TodoList() {
           animationType="slide"
           contentContainerStyle={styles.bottomSheetStyle}
         >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View>
+            <View style={{ flex: 1 }}>
               <TextInput
                 label="Nombre de la tarea"
                 mode="outlined"
@@ -130,9 +136,7 @@ export default function TodoList() {
                 onSubmitEditing={handleSave}
                 style={styles.input}
               />
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-              >
+              <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
                 <Button
                   icon="content-save"
                   mode="contained"
@@ -152,7 +156,6 @@ export default function TodoList() {
                 </Button>
               </View>
             </View>
-          </TouchableWithoutFeedback>
         </Modal>
       </Portal>
     </SafeAreaView>
@@ -194,13 +197,17 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   rightAction: {
-    width: 80,
+    width: 120,  // Aumentado el ancho para que se vea el botón
     backgroundColor: "#b00020",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
     marginVertical: 8,
     marginHorizontal: 16
+  },
+  deleteButton: {
+    backgroundColor: "#b00020",
+    width: "100%"  // Asegura que el botón de eliminar ocupe todo el ancho del área de acción
   },
   deleteText: {
     color: "white",
